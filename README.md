@@ -90,3 +90,18 @@ Resume from the newest pause snapshot (rejoins the tailnet automatically):
 ```bash
 ./resume.sh
 ```
+
+If the node has not rejoined the tailnet within ~2 minutes, its node key was
+invalidated (seen once after a pause/resume + key-cleanup pass). Recovery:
+open break-glass access (above), log into the DO web console, and run:
+
+```bash
+tailscale up --ssh --advertise-tags=tag:server --force-reauth --auth-key=tskey-auth-FRESH-KEY
+```
+
+with a fresh single-use, pre-approved, `tag:server` auth key. Do NOT
+authenticate via a bare login URL without tags -- the node joins untagged and
+the ACL then blocks all access to it (fix: add `tag:server` via the machines
+page). Expect a changed SSH host key after re-registration
+(`ssh-keygen -R claude-box`), and note tmux sessions do not survive a
+pause -- disk state does, so `claude --continue` resumes conversations.
