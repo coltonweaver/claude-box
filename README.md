@@ -73,3 +73,20 @@ From Mac or iPhone (Termius/Blink + Tailscale app):
 ssh claude-box        # or: mosh claude-box
 tmux attach -t main
 ```
+
+## Pause / Resume
+
+Stop paying for the droplet without losing it:
+
+```bash
+ID=$(doctl compute droplet get claude-box --format ID --no-header)
+doctl compute droplet-action power-off "$ID" --wait
+doctl compute droplet-action snapshot "$ID" --snapshot-name claude-box-paused-$(date +%Y-%m-%d) --wait
+doctl compute droplet delete "$ID" --force
+```
+
+Resume from the newest pause snapshot (rejoins the tailnet automatically):
+
+```bash
+./resume.sh
+```
