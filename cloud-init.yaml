@@ -1,0 +1,11 @@
+#cloud-config
+# Joins the droplet to the tailnet at first boot. ${TS_AUTHKEY} is
+# substituted by provision.sh; never commit a rendered copy.
+# NOTE: keep this file pure ASCII -- cloud-init has rejected the whole
+# config over a single multi-byte character before.
+packages:
+  - tmux
+  - mosh
+runcmd:
+  - ['sh', '-c', 'curl -fsSL https://tailscale.com/install.sh | sh']
+  - ['tailscale', 'up', '--ssh', '--auth-key=${TS_AUTHKEY}']

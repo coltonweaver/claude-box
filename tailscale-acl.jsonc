@@ -1,0 +1,22 @@
+// Paste into https://login.tailscale.com/admin/acls
+//
+// - tag:server marks the droplet; tagged nodes have no key expiry,
+//   so the box can't silently fall off the tailnet months from now.
+// - The ssh block lets your devices (autogroup:member) use Tailscale SSH
+//   into tagged servers, including as root.
+{
+	"tagOwners": {
+		"tag:server": ["autogroup:admin"],
+	},
+	"acls": [
+		{"action": "accept", "src": ["autogroup:member"], "dst": ["tag:server:*"]},
+	],
+	"ssh": [
+		{
+			"action": "accept",
+			"src":    ["autogroup:member"],
+			"dst":    ["tag:server"],
+			"users":  ["autogroup:nonroot", "root"],
+		},
+	],
+}
