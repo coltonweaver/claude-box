@@ -43,6 +43,13 @@ tmux new -s main
 claude   # authenticate with your Anthropic account (browser URL flow)
 ```
 
+Deploy [CLAUDE.md](CLAUDE.md) to `/root/CLAUDE.md` on the box — it's the
+durable agent context for the long-lived session (survives `/clear`):
+
+```bash
+scp CLAUDE.md root@claude-box:/root/CLAUDE.md
+```
+
 ## Break-glass access
 
 If Tailscale on the box ever breaks, the DO web console is the way in --
